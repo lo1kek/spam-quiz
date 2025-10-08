@@ -1,5 +1,12 @@
 [
-  { "filename": "sample1.svg", "correct": "spam" },
-  { "filename": "sample2.svg", "correct": "not_spam" },
-  { "filename": "sample3.svg", "correct": "spam" }
+  { "filename": "activity01.svg", "correct": "not_spam" },
+  { "filename": "activity02.svg", "correct": "spam" },
+  { "filename": "activity03.svg", "correct": "not_spam" },
+  { "filename": "activity04.svg", "correct": "spam" },
+  { "filename": "activity05.svg", "correct": "not_spam" },
+  { "filename": "activity06.svg", "correct": "not_spam" },
+  { "filename": "activity07.svg", "correct": "spam" },
+  { "filename": "activity08.svg", "correct": "not_spam" },
+  { "filename": "activity09.svg", "correct": "spam" },
+  { "filename": "activity10.svg", "correct": "spam" }
 ]

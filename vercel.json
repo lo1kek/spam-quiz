@@ -1,6 +1,6 @@
 {
   "functions": {
-    "app.py": {
+    "api/app.py": {
       "runtime": "python3.11",
       "includeFiles": [
         "templates/**/*",
@@ -13,7 +13,7 @@
     { "handle": "filesystem" },
     {
       "src": "/(.*)",
-      "dest": "app.py"
+      "dest": "api/app.py"
     }
   ]
 }

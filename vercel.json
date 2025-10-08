@@ -4,7 +4,7 @@
   ],
   "functions": {
     "app.py": {
-      "includeFiles": ["static/**/*", "templates/**/*", "config.json"]
+      "includeFiles": "**/*.{html,css,jpg,json}"
     }
   },
   "routes": [

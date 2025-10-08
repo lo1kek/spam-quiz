@@ -1,17 +1,16 @@
 {
-  "builds": [
-    { "src": "app.py", "use": "@vercel/python" }
-  ],
   "functions": {
     "app.py": {
-      "includeFiles": "**/*.{html,css,jpg,json}"
+      "runtime": "python3.11",
+      "includeFiles": [
+        "templates/**/*",
+        "static/**/*",
+        "config.json"
+      ]
     }
   },
   "routes": [
-    {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
+    { "handle": "filesystem" },
     {
       "src": "/(.*)",
       "dest": "app.py"

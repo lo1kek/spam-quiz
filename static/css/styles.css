@@ -91,7 +91,10 @@ button.secondary {
 }
 
 .quiz-image {
-  width: 100%;
+  width: 60%;
+  max-height: 75vh;
+  display: block;
+  margin: 0 auto;
   border-radius: 28px;
   box-shadow: 0 25px 40px -30px rgba(15, 15, 15, 0.3);
   background: #fff;

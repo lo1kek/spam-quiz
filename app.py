@@ -157,8 +157,21 @@ def save_config(items: List[Dict[str, str]]) -> None:
         json.dump(items, f, ensure_ascii=False, indent=2)
 
 
-def validate_phone(phone: str) -> bool:
-    return phone.startswith("+7") and len(phone) == 12 and phone[1:].isdigit()
+def normalize_phone(phone: str) -> str:
+    digits = "".join(ch for ch in phone if ch.isdigit())
+    if not digits:
+        raise ValueError("Phone number must contain digits")
+
+    if digits[0] == "8":
+        digits = "7" + digits[1:]
+    elif digits[0] != "7":
+        digits = "7" + digits
+
+    digits = digits[:11]
+    if len(digits) < 11:
+        raise ValueError("Phone number must contain 11 digits")
+
+    return "+7" + digits[1:]
 
 
 def ensure_user_session() -> Tuple[Dict[str, str], Dict[str, object]]:
@@ -182,8 +195,11 @@ def start_quiz():
     error = None
     if not name:
         error = "Введите имя"
-    elif not validate_phone(phone):
-        error = "Введите номер в формате +7XXXXXXXXXX"
+    else:
+        try:
+            phone = normalize_phone(phone)
+        except ValueError:
+            error = "Введите номер в формате +7 (XXX) XXX-XX-XX"
 
     if error:
         return render_template("index.html", error=error)
@@ -444,5 +460,3 @@ def static_files(filename: str):
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
-
-

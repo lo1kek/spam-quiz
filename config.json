@@ -1,0 +1,5 @@
+[
+  { "filename": "sample1.svg", "correct": "spam" },
+  { "filename": "sample2.svg", "correct": "not_spam" },
+  { "filename": "sample3.svg", "correct": "spam" }
+]

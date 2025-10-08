@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Результат — Спам или не спам{% endblock %}
+{% block content %}
+<h1>Спасибо, {{ name }}!</h1>
+<p>Ваш результат: <strong>{{ correct }}</strong> из <strong>{{ total }}</strong></p>
+{% if detailed %}
+  <details>
+    <summary>Посмотреть ответы</summary>
+    <ul>
+      {% for item in detailed %}
+        <li>{{ loop.index }}. {{ item.filename }} — ваш ответ: {{ 'Спам' if item.user_answer == 'spam' else 'Не спам' }} ({{ 'верно' if item.is_correct else 'ошибка' }})</li>
+      {% endfor %}
+    </ul>
+  </details>
+{% endif %}
+<form method="post" action="{{ url_for('restart') }}">
+  <button type="submit" class="secondary">Пройти снова</button>
+</form>
+{% endblock %}

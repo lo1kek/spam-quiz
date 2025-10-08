@@ -10,9 +10,11 @@ from typing import Dict, List, Tuple
 from flask import (
     Flask,
     Response,
+    abort,
     redirect,
     render_template,
     request,
+    send_from_directory,
     session,
     url_for,
 )
@@ -422,5 +424,25 @@ def store_result(user: Dict[str, str], quiz_state: Dict[str, object]) -> int:
     return result_id
 
 
+@app.route("/static/<path:filename>")
+def static_files(filename: str):
+    """Serve static assets from the bundled static directory."""
+
+    static_root = (BASE_DIR / "static").resolve()
+    target = (static_root / filename).resolve()
+
+    try:
+        target.relative_to(static_root)
+    except ValueError:
+        abort(404)
+
+    if not target.is_file():
+        abort(404)
+
+    return send_from_directory(static_root, filename)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+
+

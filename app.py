@@ -18,7 +18,31 @@ from flask import (
 )
 
 BASE_DIR = Path(__file__).resolve().parent
-DATABASE_PATH = BASE_DIR / "spam_quiz.db"
+
+
+def resolve_database_path() -> Path:
+    """Return a writable path for the SQLite database."""
+    override = os.environ.get("DATABASE_PATH")
+    candidates = []
+    if override:
+        candidates.append(Path(override))
+    candidates.append(BASE_DIR / "spam_quiz.db")
+    candidates.append(Path("/tmp/spam_quiz.db"))
+
+    for candidate in candidates:
+        try:
+            candidate.parent.mkdir(parents=True, exist_ok=True)
+            with open(candidate, "a"):
+                os.utime(candidate, None)
+        except OSError:
+            continue
+        else:
+            return candidate
+
+    raise RuntimeError("No writable location available for the database")
+
+
+DATABASE_PATH = resolve_database_path()
 CONFIG_PATH = BASE_DIR / "config.json"
 ENV_PATH = BASE_DIR / ".env"
 

@@ -39,6 +39,8 @@
 SECRET_KEY=случайная_строка
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=admin
+# Необязательно: явный путь до БД (например, для бессерверного деплоя)
+# DATABASE_PATH=/tmp/spam_quiz.db
 ```
 
 ## Запуск
@@ -75,17 +77,19 @@ python app.py
    echo "flask" > requirements.txt
    ```
 4. Скопируйте переменные окружения в Vercel:
-   ```bash
-   vercel env add SECRET_KEY
-   vercel env add ADMIN_USERNAME
-   vercel env add ADMIN_PASSWORD
-   ```
-   Затем введите значения, соответствующие вашему `.env`.
+  ```bash
+  vercel env add SECRET_KEY
+  vercel env add ADMIN_USERNAME
+  vercel env add ADMIN_PASSWORD
+  vercel env add DATABASE_PATH
+  ```
+  Затем введите значения, соответствующие вашему `.env` (для `DATABASE_PATH` укажите `/tmp/spam_quiz.db`).
 5. Разверните приложение:
    ```bash
    vercel --prod
    ```
 6. После завершения деплоя откройте выданный Vercel URL и убедитесь, что приложение работает корректно.
+   > Обратите внимание: файловая система Vercel очищается между перезапусками функций, поэтому база в `/tmp/spam_quiz.db` носит временный характер.
 
 ## Структура БД
 

@@ -1,12 +1,12 @@
 [
-  { "filename": "activity01.svg", "correct": "not_spam" },
-  { "filename": "activity02.svg", "correct": "spam" },
-  { "filename": "activity03.svg", "correct": "not_spam" },
-  { "filename": "activity04.svg", "correct": "spam" },
-  { "filename": "activity05.svg", "correct": "not_spam" },
-  { "filename": "activity06.svg", "correct": "not_spam" },
-  { "filename": "activity07.svg", "correct": "spam" },
-  { "filename": "activity08.svg", "correct": "not_spam" },
-  { "filename": "activity09.svg", "correct": "spam" },
-  { "filename": "activity10.svg", "correct": "spam" }
+  { "filename": "Group 5.jpg", "correct": "not_spam" },
+  { "filename": "Group 8.jpg", "correct": "spam" },
+  { "filename": "Group 9.jpg", "correct": "not_spam" },
+  { "filename": "Group 10.jpg", "correct": "spam" },
+  { "filename": "Group 11.jpg", "correct": "not_spam" },
+  { "filename": "Group 12.jpg", "correct": "not_spam" },
+  { "filename": "Group 13.jpg", "correct": "spam" },
+  { "filename": "Group 14.jpg", "correct": "not_spam" },
+  { "filename": "Group 15.jpg", "correct": "spam" },
+  { "filename": "Group 16.jpg", "correct": "spam" }
 ]

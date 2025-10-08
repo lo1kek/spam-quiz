@@ -2,6 +2,11 @@
   "builds": [
     { "src": "app.py", "use": "@vercel/python" }
   ],
+  "functions": {
+    "app.py": {
+      "includeFiles": "**/*.{html,css,jpg,json}"
+    }
+  },
   "routes": [
     {
       "src": "/(.*)",

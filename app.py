@@ -18,6 +18,7 @@ from flask import (
 )
 
 BASE_DIR = Path(__file__).resolve().parent
+IMAGES_DIR = BASE_DIR / "static" / "images"
 
 
 def resolve_database_path() -> Path:
@@ -109,12 +110,44 @@ def init_db() -> None:
 init_db()
 
 
+def resolve_image_filename(filename: str) -> str:
+    """Return a normalized filename that exists in the images directory."""
+
+    if not filename:
+        raise FileNotFoundError("Empty filename")
+
+    normalized = filename.strip()
+    direct_path = IMAGES_DIR / normalized
+    if direct_path.exists():
+        return normalized
+
+    lowercase = normalized.lower()
+    if IMAGES_DIR.exists():
+        for path in IMAGES_DIR.iterdir():
+            if path.name.lower() == lowercase:
+                return path.name
+
+    raise FileNotFoundError(f"Image not found for filename '{filename}'")
+
+
 def load_config() -> List[Dict[str, str]]:
     if not CONFIG_PATH.exists():
         return []
+
     with CONFIG_PATH.open(encoding="utf-8") as f:
-        data = json.load(f)
-    return data
+        raw_items = json.load(f)
+
+    resolved_items: List[Dict[str, str]] = []
+    for item in raw_items:
+        filename = item.get("filename", "")
+        correct = item.get("correct", "not_spam")
+        try:
+            resolved_filename = resolve_image_filename(filename)
+        except FileNotFoundError:
+            continue
+        resolved_items.append({"filename": resolved_filename, "correct": correct})
+
+    return resolved_items
 
 
 def save_config(items: List[Dict[str, str]]) -> None:

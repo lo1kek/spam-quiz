@@ -10,14 +10,17 @@ from typing import Dict, List, Tuple
 from flask import (
     Flask,
     Response,
+    abort,
     redirect,
     render_template,
     request,
+    send_from_directory,
     session,
     url_for,
 )
 
 BASE_DIR = Path(__file__).resolve().parent
+IMAGES_DIR = BASE_DIR / "static" / "images"
 
 
 def resolve_database_path() -> Path:
@@ -109,12 +112,44 @@ def init_db() -> None:
 init_db()
 
 
+def resolve_image_filename(filename: str) -> str:
+    """Return a normalized filename that exists in the images directory."""
+
+    if not filename:
+        raise FileNotFoundError("Empty filename")
+
+    normalized = filename.strip()
+    direct_path = IMAGES_DIR / normalized
+    if direct_path.exists():
+        return normalized
+
+    lowercase = normalized.lower()
+    if IMAGES_DIR.exists():
+        for path in IMAGES_DIR.iterdir():
+            if path.name.lower() == lowercase:
+                return path.name
+
+    raise FileNotFoundError(f"Image not found for filename '{filename}'")
+
+
 def load_config() -> List[Dict[str, str]]:
     if not CONFIG_PATH.exists():
         return []
+
     with CONFIG_PATH.open(encoding="utf-8") as f:
-        data = json.load(f)
-    return data
+        raw_items = json.load(f)
+
+    resolved_items: List[Dict[str, str]] = []
+    for item in raw_items:
+        filename = item.get("filename", "")
+        correct = item.get("correct", "not_spam")
+        try:
+            resolved_filename = resolve_image_filename(filename)
+        except FileNotFoundError:
+            continue
+        resolved_items.append({"filename": resolved_filename, "correct": correct})
+
+    return resolved_items
 
 
 def save_config(items: List[Dict[str, str]]) -> None:
@@ -389,5 +424,25 @@ def store_result(user: Dict[str, str], quiz_state: Dict[str, object]) -> int:
     return result_id
 
 
+@app.route("/static/<path:filename>")
+def static_files(filename: str):
+    """Serve static assets from the bundled static directory."""
+
+    static_root = (BASE_DIR / "static").resolve()
+    target = (static_root / filename).resolve()
+
+    try:
+        target.relative_to(static_root)
+    except ValueError:
+        abort(404)
+
+    if not target.is_file():
+        abort(404)
+
+    return send_from_directory(static_root, filename)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+
+

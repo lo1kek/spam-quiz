@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Админ-панель — Спам или не спам{% endblock %}
+{% block content %}
+<h1>Статистика прохождений</h1>
+<p>Всего попыток: {{ results|length }}</p>
+<div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+  <form method="post" action="{{ url_for('admin_logout') }}">
+    <button type="submit" class="secondary">Выйти</button>
+  </form>
+  <a href="{{ url_for('export_results') }}"><button type="button">Экспорт CSV</button></a>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Имя</th>
+      <th>Телефон</th>
+      <th>Правильных</th>
+      <th>Всего</th>
+      <th>Дата</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in results %}
+    <tr>
+      <td>{{ row['name'] }}</td>
+      <td>{{ row['phone'] }}</td>
+      <td>{{ row['correct_answers'] }}</td>
+      <td>{{ row['total_questions'] }}</td>
+      <td>{{ row['created_at'] }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="5">Пока никто не проходил тест.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<section class="admin-config">
+  <h3>Настройка правильных ответов</h3>
+  <form method="post" action="{{ url_for('update_config') }}">
+    {% for item in config %}
+    <div class="config-card">
+      <strong>{{ item.filename }}</strong>
+      <img src="{{ url_for('static', filename='images/' + item.filename) }}" alt="{{ item.filename }}" />
+      <div class="config-options">
+        <label>
+          <input type="radio" name="config_{{ loop.index0 }}" value="not_spam" {% if item.correct == 'not_spam' %}checked{% endif %} />
+          Не спам
+        </label>
+        <label>
+          <input type="radio" name="config_{{ loop.index0 }}" value="spam" {% if item.correct == 'spam' %}checked{% endif %} />
+          Спам
+        </label>
+      </div>
+      <input type="hidden" name="filename_{{ loop.index0 }}" value="{{ item.filename }}" />
+    </div>
+    {% endfor %}
+    <button type="submit">Сохранить ответы</button>
+  </form>
+</section>
+{% endblock %}

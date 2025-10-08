@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Начало теста — Спам или не спам{% endblock %}
+{% block content %}
+<h1>Проверка номера: спам или нет?</h1>
+<p>Введите данные, чтобы начать тест.</p>
+<p>
+  За 2024 год сервис "МТС Защитник" заблокировал более 2 млрд нежелательных звонков.
+  Сервис построен на базе AI компонентов, которые в отличие от человека работают 24 часа в сутки и 365 дней в году.
+</p>
+<p>
+  Дорогой коллега, сегодня мы хотим тебя попросить побыть нашей моделью которая принимает решение "заблокировать" номер или нет.
+</p>
+<p>
+  Далее мы покажем тебе 10 карточек с звонковой активностью (красные полоски на графике, это звонки и их длительность) — анализируя
+  сколько звонков и какова длительность, прими верное решение: заблокировать или пропустить звонок далее.
+</p>
+<form method="post" action="{{ url_for('start_quiz') }}">
+  <div class="form-group">
+    <label for="name">Имя</label>
+    <input type="text" id="name" name="name" placeholder="Например, Анна" value="{{ request.form.get('name', '') }}" required />
+  </div>
+  <div class="form-group">
+    <label for="phone">Телефон</label>
+    <input type="tel" id="phone" name="phone" placeholder="+7(___)___-__-__" pattern="\+7[0-9]{10}" value="{{ request.form.get('phone', '') }}" required />
+    <small>Формат: +7XXXXXXXXXX</small>
+  </div>
+  {% if error %}
+  <p style="color: #d9534f; font-weight: 600;">{{ error }}</p>
+  {% endif %}
+  <button type="submit">Начать</button>
+</form>
+{% endblock %}

@@ -2,7 +2,7 @@
 {% block title %}Карточка {{ current_index + 1 }} — Спам или не спам{% endblock %}
 {% block content %}
 <h2>Карточка {{ current_index + 1 }} из {{ total }}</h2>
-<p>Выберите, относится ли номер к спаму.</p>
+<p>Выберите, относится ли карточка к спаму.</p>
 <div>
   <img class="quiz-image" src="{{ url_for('static', filename='images/' + image.filename) }}" alt="Карточка {{ current_index + 1 }}" />
 </div>

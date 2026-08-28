@@ -7,3 +7,4 @@ spam_quiz.db
 instance/
 .DS_Store
 *.log
+.vercel

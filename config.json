@@ -1,12 +1,42 @@
 [
-  { "filename": "Group 5.jpg", "correct": "not_spam" },
-  { "filename": "Group 8.jpg", "correct": "spam" },
-  { "filename": "Group 9.jpg", "correct": "not_spam" },
-  { "filename": "Group 10.jpg", "correct": "spam" },
-  { "filename": "Group 11.jpg", "correct": "not_spam" },
-  { "filename": "Group 12.jpg", "correct": "not_spam" },
-  { "filename": "Group 13.jpg", "correct": "spam" },
-  { "filename": "Group 14.jpg", "correct": "not_spam" },
-  { "filename": "Group 15.jpg", "correct": "spam" },
-  { "filename": "Group 16.jpg", "correct": "spam" }
+  {
+    "filename": "group_5.jpg",
+    "correct": "not_spam"
+  },
+  {
+    "filename": "group_8.jpg",
+    "correct": "spam"
+  },
+  {
+    "filename": "group_9.jpg",
+    "correct": "not_spam"
+  },
+  {
+    "filename": "group_10.jpg",
+    "correct": "spam"
+  },
+  {
+    "filename": "group_11.jpg",
+    "correct": "not_spam"
+  },
+  {
+    "filename": "group_12.jpg",
+    "correct": "not_spam"
+  },
+  {
+    "filename": "group_13.jpg",
+    "correct": "spam"
+  },
+  {
+    "filename": "group_14.jpg",
+    "correct": "not_spam"
+  },
+  {
+    "filename": "group_15.jpg",
+    "correct": "spam"
+  },
+  {
+    "filename": "group_16.jpg",
+    "correct": "spam"
+  }
 ]

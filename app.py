@@ -157,23 +157,6 @@ def save_config(items: List[Dict[str, str]]) -> None:
         json.dump(items, f, ensure_ascii=False, indent=2)
 
 
-def normalize_phone(phone: str) -> str:
-    digits = "".join(ch for ch in phone if ch.isdigit())
-    if not digits:
-        raise ValueError("Phone number must contain digits")
-
-    if digits[0] == "8":
-        digits = "7" + digits[1:]
-    elif digits[0] != "7":
-        digits = "7" + digits
-
-    digits = digits[:11]
-    if len(digits) < 11:
-        raise ValueError("Phone number must contain 11 digits")
-
-    return "+7" + digits[1:]
-
-
 def ensure_user_session() -> Tuple[Dict[str, str], Dict[str, object]]:
     user = session.get("user")
     quiz = session.get("quiz")
@@ -190,16 +173,10 @@ def index():
 @app.route("/start", methods=["POST"])
 def start_quiz():
     name = request.form.get("name", "").strip()
-    phone = request.form.get("phone", "").strip()
 
     error = None
     if not name:
         error = "Введите имя"
-    else:
-        try:
-            phone = normalize_phone(phone)
-        except ValueError:
-            error = "Введите номер в формате +7 (XXX) XXX-XX-XX"
 
     if error:
         return render_template("index.html", error=error)
@@ -209,7 +186,7 @@ def start_quiz():
         error = "Нет доступных карточек для викторины. Обратитесь к администратору."
         return render_template("index.html", error=error)
 
-    session["user"] = {"name": name, "phone": phone}
+    session["user"] = {"name": name}
     session["quiz"] = {
         "current_index": 0,
         "correct": 0,
@@ -356,13 +333,13 @@ def export_results():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT name, phone, correct_answers, total_questions, created_at FROM results ORDER BY datetime(created_at) DESC"
+        "SELECT name, correct_answers, total_questions, created_at FROM results ORDER BY datetime(created_at) DESC"
     )
     rows = cursor.fetchall()
     conn.close()
 
     def generate():
-        header = ["name", "phone", "correct_answers", "total_questions", "created_at"]
+        header = ["name", "correct_answers", "total_questions", "created_at"]
         output = StringIO()
         writer = csv.writer(output)
         writer.writerow(header)
@@ -387,7 +364,7 @@ def render_admin_dashboard():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT name, phone, correct_answers, total_questions, created_at FROM results ORDER BY datetime(created_at) DESC"
+        "SELECT name, correct_answers, total_questions, created_at FROM results ORDER BY datetime(created_at) DESC"
     )
     results = cursor.fetchall()
     conn.close()
@@ -411,7 +388,7 @@ def store_result(user: Dict[str, str], quiz_state: Dict[str, object]) -> int:
         """,
         (
             user.get("name"),
-            user.get("phone"),
+            "",
             quiz_state.get("correct", 0),
             quiz_state.get("total", 0),
             datetime.utcnow().isoformat(timespec="seconds"),

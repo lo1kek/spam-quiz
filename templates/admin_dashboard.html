@@ -13,7 +13,7 @@
   <thead>
     <tr>
       <th>Имя</th>
-      <th>Телефон</th>
+
       <th>Правильных</th>
       <th>Всего</th>
       <th>Дата</th>
@@ -23,14 +23,14 @@
     {% for row in results %}
     <tr>
       <td>{{ row['name'] }}</td>
-      <td>{{ row['phone'] }}</td>
+
       <td>{{ row['correct_answers'] }}</td>
       <td>{{ row['total_questions'] }}</td>
       <td>{{ row['created_at'] }}</td>
     </tr>
     {% else %}
     <tr>
-      <td colspan="5">Пока никто не проходил тест.</td>
+      <td colspan="4">Пока никто не проходил тест.</td>
     </tr>
     {% endfor %}
   </tbody>
